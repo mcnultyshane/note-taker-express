@@ -1,3 +1,4 @@
+// Dependencies
 const fs = require('fs');
 const path = require('path');
 
@@ -10,6 +11,7 @@ module.exports = app => {
         let notes = JSON.parse(data);
 
         // API Routes
+        // -------------------------------------------------------
         // setup api get
         app.get('/api/notes', (req, res) => {
             res.json(notes)
@@ -33,10 +35,13 @@ module.exports = app => {
 
 
         // View Routes
-
+        // -------------------------------------------------------------      
+        // On Load Page-> Start with index.html
+        app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/../public/index.html')));
+        
+        // Notes html page and the 'url' for the page.
         app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/../public/notes.html')));
 
-        app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/../public/index.html')));
 
         function updateDb() {
             fs.writeFile("db/db.json", JSON.stringify(notes, '\t'), err => {
