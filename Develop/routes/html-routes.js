@@ -1,26 +1,39 @@
 const fs = require('fs');
-const path = require('path'); 
+const path = require('path');
 
-module.exports = function (app) {
+module.exports = (app) => {
 
-    fstat.readFile('db/db.json','utf8', (err,data) => {
+    fs.readFile('db/db.json', 'utf8', (err, data) => {
         if (err) throw err;
 
         let notes = JSON.parse(data);
 
         // API Routes
+        // setup api get
         app.get('/api/notes', (req, res) => res.json(notes));
-        
+
+    })
+    // setup api post
+    app.post('api/notes', (req, res) => {
+        let newNotes = req.body;
+        notes.push(newNotes);
+        updateDb();
+        return console.log(`Added Note: ${newNotes.title}`);
     })
 
-        app.post('api/notes', (req, res) => {
-            let newNotes = req.body;
-            notes.push(newNotes);
-            updateDb();
-            return console.log(`Added Note: ${newNotes.title}`);
-        })
-    
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/../public/notes.html')));
+    app.get('api/notes:id', (req, res) => {
+        notes.splice(req.params.id, 1);
+        updateDb()
+    })
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/../public/index.html')));
+    app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, '/../public/notes.html')));
+
+    app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/../public/index.html')));
+
+    function updateDb() {
+        fs.writeFile("db/db.json", JSON.stringify(notes, '\t'),err => {
+            if(err) throw err;
+            return true;
+        })
+    };
 }
