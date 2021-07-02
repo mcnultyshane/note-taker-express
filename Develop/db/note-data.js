@@ -1,10 +1,10 @@
-const { text } = require("body-parser");
+// const { text } = require("body-parser");
 
-const noteArray = [
-    {
-        title:"",
-        text:""
-    }
-]
+// const noteArray = [
+//     {
+//         title:"",
+//         text:""
+//     }
+// ]
 
-module.exports = tableArray;
+// module.exports = tableArray;
