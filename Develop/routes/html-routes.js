@@ -1,6 +1,7 @@
 // Dependencies
 const fs = require('fs');
 const path = require('path');
+const notes = require ('../db/db.json')
 
 module.exports = app => {
 
@@ -21,6 +22,18 @@ module.exports = app => {
         // setup api post
         app.post('api/notes', (req, res) => {
             let newNotes = req.body;
+            let newId = 99;
+            // Loop through array to find highest ID
+            for (let i = 0; i < notes.length; i++) {
+                const singleNote = notes[i];
+
+                if (singleNote.id > newID) { 
+                    newId = singleNote.id;
+                    
+                }
+                
+            }
+            newNotes.id = newId + 1;
             notes.push(newNotes);
             updateDb();
             return console.log(`Added Note: ${newNotes.title}`);
