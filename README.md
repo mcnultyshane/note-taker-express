@@ -1,9 +1,8 @@
 # note-taker-express
 
-# readme_generator
 
 ## Description
- 
+ This Project is designed for us to apply our express.js learning into an daily task manager.  The user should be able to add tasks to a stored list and be able to retrieve the notes.  
 
 ### Table of Contents
 
@@ -18,7 +17,7 @@
     Once that is complete, please create a clone of this repository.  Then navigate to the cloned repository in your terminal.  Then install the required npm modules by running 'npm i' in your terminal.  Finally, type 'node index.js' to begin the generator and follow the prompts.  
 
 ## Usage
-    
+      The following is a walk though video of its uses: [Walkthough Video](https://drive.google.com/file/d/1DowKcQCwDkqUwpC-eUjofcbIoeiWn3HZ/view)
 
 
 ## Guidelines
