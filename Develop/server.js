@@ -29,6 +29,51 @@ app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html')));
 
 
+// API Routes
+// -------------------------------------------------------
+// setup api get
+
+app.route('/api/notes')
+    .get(function (req, res) {
+        // fetch the notes array database
+        res.json(notes)
+    })
+
+// setup api post
+    .post(function (req, res) {
+            let jsonPath = path.join(__dirname, "/db/db.json");
+            let newNotes = req.body;
+
+            let newId = 103;
+            // Loop through array to find highest ID
+            for (let i = 0; i < notes.length; i++) {
+                let singleNote = notes[i];
+
+                if (singleNote.id > newID) {
+                    newId = singleNote.id;
+
+                }
+            }
+            // Assign ID to new Note
+            newNotes.id = newId + 1;
+
+            // Push to the db.json
+            notes.push(newNotes);
+
+            // write db. json file
+            fs.writeFile(jsonPath, JSON.stringify(notes), err => {
+                if (err) {
+                    return console.log(err);
+
+                }
+                console.log("Your note was saved");
+            });
+            res.json(newNotes)
+
+        });
+
+
+
 // Express Listening.  Setting ups server
 app.listen(PORT, () => {
     console.log(`App listening on PORT; ${PORT}`);
