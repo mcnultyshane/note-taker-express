@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const notes = require('./db/db');
-const e = require('express');
+heroconst uuid = require('uuid');
 
 console.log(notes);
 // The Express App
@@ -45,7 +45,7 @@ app.route('/api/notes')
     .post(function (req, res) {
             let jsonPath = path.join(__dirname, "/db/db.json");
             let newNote = req.body;
-            console.log(newNote);
+            console.log("this is line 48:" + newNote);
             // let newId = 99;
             // // Loop through array to find highest ID
             // for (let i = 0; i < notes.length; i++) {
@@ -61,7 +61,7 @@ app.route('/api/notes')
 
             // Push to the db.json
             notes.push(newNote);
-            console.log(notes);
+            console.log("this is line 64 " + notes);
             // write db. json file
             fs.writeFile(jsonPath, JSON.stringify(notes), err => {
                 if (err) {
@@ -71,6 +71,7 @@ app.route('/api/notes')
                 console.log("Your note was saved");
             });
             res.json(newNotes)
+            
 
         });
 // delete a note based on id
