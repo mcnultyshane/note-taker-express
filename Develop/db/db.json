@@ -1,12 +1,1 @@
-[
-    {
-        "title":"Test Title",
-        "text":"Test text",
-        "id": 100
-    },
-    {
-        "title":"Wash Delicates",
-        "text":"Fold the laundry",
-        "id": 102
-    }
-]
+[{"title":"Wash Delicates","text":"Fold the laundry"},{"title":"Do the dishes","text":"scrub the pan"},{"title":"Vacuum Rugs","text":"Don't forget basement"}]

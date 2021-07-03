@@ -46,22 +46,22 @@ app.route('/api/notes')
             let jsonPath = path.join(__dirname, "/db/db.json");
             let newNote = req.body;
             console.log(newNote);
-            let newId = 99;
-            // Loop through array to find highest ID
-            for (let i = 0; i < notes.length; i++) {
-                let singleNote = notes[i];
+            // let newId = 99;
+            // // Loop through array to find highest ID
+            // for (let i = 0; i < notes.length; i++) {
+            //     let singleNote = notes[i];
 
-                if (singleNote.id > newID) {
-                    newId = singleNote.id;
+            //     if (singleNote.id > newID) {
+            //         newId = singleNote.id;
 
-                }
-            }
-            // Assign ID to new Note
-            newNote.id = newId + 1;
+            //     }
+            // }
+            // // Assign ID to new Note
+            // newNote.id = newId + 1;
 
             // Push to the db.json
             notes.push(newNote);
-
+            console.log(notes);
             // write db. json file
             fs.writeFile(jsonPath, JSON.stringify(notes), err => {
                 if (err) {
@@ -80,7 +80,7 @@ app.delete("/api/notes/:id", function(req, res){
 
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].id == req.params.id) {
-            database.splice(i, 1);
+            notes.splice(i, 1);
             break;
         }
         
