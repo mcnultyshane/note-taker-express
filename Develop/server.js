@@ -2,8 +2,10 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const notes = require('./db/db')
+const notes = require('./db/db');
+const e = require('express');
 
+console.log(notes);
 // The Express App
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -42,9 +44,9 @@ app.route('/api/notes')
 // setup api post
     .post(function (req, res) {
             let jsonPath = path.join(__dirname, "/db/db.json");
-            let newNotes = req.body;
-
-            let newId = 103;
+            let newNote = req.body;
+            console.log(newNote);
+            let newId = 99;
             // Loop through array to find highest ID
             for (let i = 0; i < notes.length; i++) {
                 let singleNote = notes[i];
@@ -55,15 +57,15 @@ app.route('/api/notes')
                 }
             }
             // Assign ID to new Note
-            newNotes.id = newId + 1;
+            newNote.id = newId + 1;
 
             // Push to the db.json
-            notes.push(newNotes);
+            notes.push(newNote);
 
             // write db. json file
             fs.writeFile(jsonPath, JSON.stringify(notes), err => {
                 if (err) {
-                    return console.log(err);
+                    return console.log("this is line 66 error;" + err);
 
                 }
                 console.log("Your note was saved");
@@ -71,7 +73,28 @@ app.route('/api/notes')
             res.json(newNotes)
 
         });
+// delete a note based on id
 
+app.delete("/api/notes/:id", function(req, res){
+    let jsonFilePath = path.join (__dirname, "/db/db.json")
+
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i].id == req.params.id) {
+            database.splice(i, 1);
+            break;
+        }
+        
+    }
+    fs.writeFileSync(jsonFilePath, JSON.stringify(notes), function (err){
+
+        if (err) {
+            return console.log(err);
+        } else {
+            console.log("Your note has been removed from list.");
+        }
+    })
+    res.json(notes);
+})
 
 
 // Express Listening.  Setting ups server
