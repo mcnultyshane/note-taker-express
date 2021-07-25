@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const notes = require('./db/db');
 const uuid = require('uuid');
+const { request } = require('http');
 
 console.log(notes);
 // The Express App
@@ -35,67 +36,58 @@ app.get('/notes', (req, res) =>
 // -------------------------------------------------------
 // setup api get
 
-app.route('/api/notes')
-    .get(function (req, res) {
-        // fetch the notes array database
-        res.json(notes)
-    })
+app.get('/api/notes', (req, res) => {
+    console.log("\n\nExecuting GET notes request");
+    let data = JSON.parse(fs.readFileSync('/db/db.json', 'utf-8'));
+    console.log('\nGET request - Returning notes data: ' + JSON.stringify(data));
+
+    // fetch the notes array database
+    res.json(data)
+
+})
+
 
 // setup api post
-    .post(function (req, res) {
-            let jsonPath = path.join(__dirname, "/db/db.json");
-            let newNote = req.body;
-            console.log("this is line 48:" + newNote);
-            // let newId = 99;
-            // // Loop through array to find highest ID
-            // for (let i = 0; i < notes.length; i++) {
-            //     let singleNote = notes[i];
+app.post('/api/notes', (req, res) => {
+    let jsonPath = path.join(__dirname, "/db/db.json");
+    let newNote = req.body;
 
-            //     if (singleNote.id > newID) {
-            //         newId = singleNote.id;
+    newNote.id = uuid();
+    let data = JSON.parse(fs.readFileSync('/db/db.json', 'utf-8'));
+    // Push to the db.json
+    data.push(newNote);
 
-            //     }
-            // }
-            // // Assign ID to new Note
-            // newNote.id = newId + 1;
+    // write db. json file
+    fs.writeFile(jsonPath, JSON.stringify(data), err => {
+        if (err) {
+            return console.log("this is line 66 error;" + err);
 
-            // Push to the db.json
-            notes.push(newNote);
-            console.log("this is line 64 " + notes);
-            // write db. json file
-            fs.writeFile(jsonPath, JSON.stringify(notes), err => {
-                if (err) {
-                    return console.log("this is line 66 error;" + err);
+        }
+        console.log("Your note was saved");
+    });
+    res.json(data)
 
-                }
-                console.log("Your note was saved");
-            });
-            res.json(newNotes)
-            
 
-        });
+});
 // delete a note based on id
 
-app.delete("/api/notes/:id", function(req, res){
-    let jsonFilePath = path.join (__dirname, "/db/db.json")
+app.delete("/api/notes/:id", (req, res) => {
+    let jsonFilePath = path.join(__dirname, "/db/db.json")
+    let noteId = request.params.id.toString();
+    console.log(`\n\nDELETE note request for noteId: ${noteId}`);
+    // filter data to get notes except the one to delete
+    const newData = data.filter( note => note.id.toString() !== noteId );
 
-    for (let i = 0; i < notes.length; i++) {
-        if (notes[i].id == req.params.id) {
-            notes.splice(i, 1);
-            break;
-        }
-        
-    }
-    fs.writeFileSync(jsonFilePath, JSON.stringify(notes), function (err){
+    fs.writeFileSync(jsonFilePath, JSON.stringify(newData), function (err) {
 
         if (err) {
             return console.log(err);
         } else {
-            console.log("Your note has been removed from list.");
+            console.log(`\nSuccessfully deleted note with id : ${noteId}`);
         }
     })
-    res.json(notes);
-})
+    res.json(newData);
+});
 
 
 // Express Listening.  Setting ups server
