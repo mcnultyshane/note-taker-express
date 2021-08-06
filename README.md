@@ -19,6 +19,8 @@
 ## Usage
       The following is a walk though video of its uses: [Walkthough Video](https://drive.google.com/file/d/1DowKcQCwDkqUwpC-eUjofcbIoeiWn3HZ/view)
 
+      <img src='./images/Cature.JPG;" alt='app screenshot'>
+
 
 ## Guidelines
 
